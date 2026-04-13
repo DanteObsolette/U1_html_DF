@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Contraseña - Club Deportivo Pro</title>
+    
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+
+    <header>
+        <h1>Club Deportivo Pro</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="#">Planes</a>
+            <a href="#">Reservas</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="recuperar">
+            <h2>Cambiar Contraseña</h2>
+            <form id="changePasswordForm">
+                <label for="newPassword">Nueva Contraseña:</label>
+                <input type="password" id="newPassword" name="newPassword" required>
+                <label for="confirmPassword">Confirmar Contraseña:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <button type="button" id="confirmButton">Confirmar Cambio</button>
+            </form>
+            <div id="message" style="display: none;">
+                <p>Contraseña cambiada exitosamente.</p>
+                <button onclick="window.location.href='index.html'">Volver al Login</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Club Deportivo</p>
+    </footer>
+
+    <script>
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (newPassword === confirmPassword) {
+                document.getElementById('changePasswordForm').style.display = 'none';
+                document.getElementById('message').style.display = 'block';
+            } else {
+                alert('Las contraseñas no coinciden. Inténtalo de nuevo.');
+            }
+        });
+    </script>
+
+</body>
+</html>
