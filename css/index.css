@@ -89,6 +89,8 @@ form {
     display: grid;
     gap: 16px;
     max-width: 520px;
+    margin: 0 auto;
+    justify-items: center;
 }
 
 label {
