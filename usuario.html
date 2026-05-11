@@ -10,19 +10,21 @@
         <a href="index.html"><img src="logo.PNG.png" alt="SportClub logo"></a>
         <nav>
             <a href="index.html">Inicio</a>
+            <a href="perfil.html">Mi perfil</a>
             <a href="#">Clases</a>
             <a href="#">Reservas</a>
             <a href="#">Mi Progreso</a>
-            <button onclick="window.location.href='login.html'">Cerrar Sesión</button>
+            <button type="button" id="btn-logout">Cerrar Sesión</button>
         </nav>
     </header>
     <main>
         <h2>Dashboard Usuario</h2>
+        <p class="dashboard-welcome">Sesión iniciada como: <strong id="user-display-name"></strong></p>
         <section class="dashboard-panel">
             <div class="panel">
                 <h3>Mi Perfil</h3>
-                <p>Nombre: Juan Pérez</p>
-                <p>Email: usuario@correo.com</p>
+                <p>Nombre: <span id="user-display-name-profile"></span></p>
+                <p>Email: <span id="user-display-email"></span></p>
                 <p>Objetivos personales:</p>
                 <ul>
                     <li>Mejorar resistencia</li>
@@ -44,5 +46,12 @@
     <footer>
         <p>© 2026 SportClub</p>
     </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        protectDashboard("user");
+    </script>
 </body>
 </html>

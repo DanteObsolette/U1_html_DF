@@ -10,14 +10,16 @@
         <a href="index.html"><img src="logo.PNG.png" alt="SportClub logo"></a>
         <nav>
             <a href="index.html">Inicio</a>
+            <a href="perfil.html">Mi perfil</a>
             <a href="#">Mis Alumnos</a>
             <a href="#">Mi Horario</a>
             <a href="#">Reportes</a>
-            <button onclick="window.location.href='login.html'">Cerrar Sesión</button>
+            <button type="button" id="btn-logout">Cerrar Sesión</button>
         </nav>
     </header>
     <main>
         <h2>Dashboard Coach</h2>
+        <p class="dashboard-welcome">Sesión iniciada como: <strong id="user-display-name"></strong> (<span id="user-display-email"></span>)</p>
         <section class="dashboard-panel">
             <div class="panel">
                 <h3>Mis alumnos</h3>
@@ -40,5 +42,12 @@
     <footer>
         <p>© 2026 SportClub</p>
     </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        protectDashboard("coach");
+    </script>
 </body>
 </html>

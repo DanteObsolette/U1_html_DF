@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil - SportClub</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body class="page-login">
+    <header>
+        <a href="index.html"><img src="logo.PNG.png" alt="SportClub logo"></a>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a id="nav-dashboard" href="usuario.html">Mi panel</a>
+            <button type="button" id="btn-logout">Cerrar Sesión</button>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Mi perfil</h2>
+            <p class="dashboard-welcome">Hola, <strong id="user-display-name"></strong></p>
+            <p class="form-hint">Puede actualizar su nombre y fecha de nacimiento. El correo y el rol no se pueden modificar desde aquí.</p>
+
+            <form id="profile-form" class="profile-form">
+                <label for="full_name">Nombre completo</label>
+                <input type="text" id="full_name" name="full_name" required minlength="3" maxlength="150" autocomplete="name">
+                <p class="field-error" id="err-full_name" data-field-error></p>
+
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" readonly class="input-readonly" autocomplete="off">
+
+                <label for="role">Rol</label>
+                <input type="text" id="role" readonly class="input-readonly" tabindex="-1">
+
+                <label for="birth_date">Fecha de nacimiento</label>
+                <input type="date" id="birth_date" name="birth_date">
+                <p class="field-error" id="err-birth_date" data-field-error></p>
+
+                <button type="submit">Guardar cambios</button>
+            </form>
+
+            <p id="profile-error" class="login-error" role="alert" hidden></p>
+            <p id="profile-success" class="form-success" role="status" hidden></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 SportClub</p>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/perfil.js"></script>
+    <script>
+        (function () {
+            var s = typeof getSessionUser === "function" ? getSessionUser() : null;
+            if (s && s.role) {
+                var map = { user: "usuario.html", coach: "entrenador.html", admin: "administrador.html" };
+                var a = document.getElementById("nav-dashboard");
+                if (a) a.setAttribute("href", map[s.role] || "usuario.html");
+            }
+        })();
+        initProfilePage();
+    </script>
+</body>
+</html>

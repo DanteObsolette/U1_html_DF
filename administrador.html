@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Administrador - SportClub</title>
     <link rel="stylesheet" href="css/index.css">
 </head>
@@ -10,34 +11,133 @@
         <a href="index.html"><img src="logo.PNG.png" alt="SportClub logo"></a>
         <nav>
             <a href="index.html">Inicio</a>
-            <a href="#">Usuarios</a>
-            <a href="#">Estadísticas</a>
-            <a href="#">Configuración</a>
-            <button onclick="window.location.href='login.html'">Cerrar Sesión</button>
+            <a href="perfil.html">Mi perfil</a>
+            <a href="#usuarios">Usuarios (API)</a>
+            <button type="button" id="btn-logout">Cerrar Sesión</button>
         </nav>
     </header>
     <main>
-        <h2>Dashboard Admin</h2>
-        <section class="dashboard-panel">
-            <div class="panel">
-                <h3>Gestión de Usuarios</h3>
-                <p>Usuario1 - Editar</p>
-                <p>Usuario2 - Editar</p>
+        <h2>Dashboard Administrador</h2>
+        <p class="dashboard-welcome">Sesión iniciada como: <strong id="user-display-name"></strong> (<span id="user-display-email"></span>)</p>
+
+        <p id="admin-page-error" class="login-error" role="alert" hidden></p>
+
+        <section class="dashboard-panel" id="usuarios">
+            <div class="panel panel-wide">
+                <h3>Crear usuario</h3>
+                <p class="form-hint">Gestión mediante API <code>POST /api/users</code> (solo administradores).</p>
+                <form id="admin-create-form" class="admin-inline-form">
+                    <div class="admin-form-grid">
+                        <div>
+                            <label for="create-full_name">Nombre completo</label>
+                            <input id="create-full_name" type="text" required minlength="3" maxlength="150">
+                        </div>
+                        <div>
+                            <label for="create-email">Correo</label>
+                            <input id="create-email" type="email" required maxlength="150">
+                        </div>
+                        <div>
+                            <label for="create-password">Contraseña</label>
+                            <input id="create-password" type="password" required minlength="8" autocomplete="new-password">
+                        </div>
+                        <div>
+                            <label for="create-role">Rol</label>
+                            <select id="create-role">
+                                <option value="user">Usuario</option>
+                                <option value="coach">Coach</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="create-birth_date">Fecha nacimiento</label>
+                            <input id="create-birth_date" type="date">
+                        </div>
+                    </div>
+                    <button type="submit">Crear usuario</button>
+                </form>
+                <p id="create-form-error" class="login-error" role="alert" hidden></p>
+                <p id="create-form-success" class="form-success" role="status" hidden></p>
             </div>
-            <div class="panel">
-                <h3>Estadísticas del Sistema</h3>
-                <p>Usuarios activos: 120</p>
-                <p>Clases reservadas: 42</p>
+
+            <div class="panel panel-wide">
+                <h3>Listado de usuarios</h3>
+                <p class="form-hint">Datos desde <code>GET /api/users</code>. Acciones: <code>PUT</code> y <code>DELETE /api/users/:id</code>.</p>
+                <div class="table-wrap">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Rol</th>
+                                <th>Nacimiento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body"></tbody>
+                    </table>
+                </div>
             </div>
+
             <div class="panel">
-                <h3>Reportes Generales</h3>
-                <p>Informe mensual - Descargar</p>
-                <p>Configurar alertas</p>
+                <h3>Estadísticas (demo)</h3>
+                <p>Usuarios listados arriba provienen de la base de datos del backend.</p>
             </div>
         </section>
     </main>
+
+    <dialog id="dialog-edit" class="app-dialog">
+        <form id="admin-edit-form" class="dialog-form">
+            <h3>Editar usuario</h3>
+            <input type="hidden" id="edit-id">
+            <label for="edit-full_name">Nombre completo</label>
+            <input id="edit-full_name" type="text" required minlength="3">
+            <p class="field-error" id="edit-err-full_name"></p>
+            <label for="edit-email">Correo</label>
+            <input id="edit-email" type="email" required>
+            <p class="field-error" id="edit-err-email"></p>
+            <label for="edit-role">Rol</label>
+            <select id="edit-role">
+                <option value="user">Usuario</option>
+                <option value="coach">Coach</option>
+                <option value="admin">Administrador</option>
+            </select>
+            <p class="field-error" id="edit-err-role"></p>
+            <label for="edit-birth_date">Fecha nacimiento</label>
+            <input id="edit-birth_date" type="date">
+            <p class="field-error" id="edit-err-birth_date"></p>
+            <label for="edit-password">Nueva contraseña (opcional, mín. 8)</label>
+            <input id="edit-password" type="password" minlength="8" autocomplete="new-password">
+            <p class="field-error" id="edit-err-password"></p>
+            <p id="edit-form-error" class="login-error" role="alert" hidden></p>
+            <div class="dialog-actions">
+                <button type="button" id="btn-cancel-edit" class="btn-secondary">Cancelar</button>
+                <button type="submit" value="save">Guardar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialog-delete" class="app-dialog">
+        <div class="dialog-form">
+            <h3>Eliminar usuario</h3>
+            <p id="delete-message"></p>
+            <div class="dialog-actions">
+                <button type="button" id="btn-cancel-delete" class="btn-secondary">Cancelar</button>
+                <button type="button" id="btn-confirm-delete" class="btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </dialog>
+
     <footer>
         <p>© 2026 SportClub</p>
     </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin-users.js"></script>
+    <script>
+        initAdminUsersPage();
+    </script>
 </body>
 </html>
